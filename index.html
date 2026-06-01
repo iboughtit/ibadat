@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#07120f">
+  <meta name="description" content="Namaz & Ayah is a premium Islamic PWA for daily Quran ayahs, prayer timings, tasbeeh, favorites, audio recitation, and reminders.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Namaz & Ayah">
+<link rel="icon" type="image/png" sizes="192x192" href="./Gemini_Generated_Image_9jamzn9jamzn9jam.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./Gemini_Generated_Image_9jamzn9jamzn9jam.png">
+<link rel="apple-touch-icon" href="./Gemini_Generated_Image_9jamzn9jamzn9jam.png">
+  <title>Namaz & Ayah</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1.3.3">
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "0e3fa3fd-4e07-4fd9-b9be-942e1f57df75",
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="aurora" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <canvas id="particles" class="particles" aria-hidden="true"></canvas>
+
+  <header class="app-header">
+    <nav class="nav-shell" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="Namaz and Ayah home">
+        <span class="brand-mark">ن</span>
+        <span>
+          <strong>Namaz & Ayah</strong>
+          <small>Daily remembrance</small>
+        </span>
+      </a>
+      <button class="nav-toggle icon-button" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="#ayah">Ayah</a>
+        <a href="#prayers">Namaz</a>
+        <a href="#tasbeeh">Tasbeeh</a>
+        <a href="#favorites">Saved</a>
+        <button class="mobile-install-link" id="installMenuBtn" type="button">Install App</button>
+      </div>
+      <button class="install-nav-button" id="installNavBtn" type="button">
+        <span>Install</span>
+      </button>
+      <button class="notify-pill" id="notifyTopBtn" type="button">
+        <span class="pulse-dot"></span>
+        Enable Alerts
+      </button>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero section-reveal">
+      <div class="hero-copy">
+        <p class="eyebrow">Premium Islamic PWA</p>
+       <h1>Dua Ki Darkhast</h1>
+<p class="hero-text">
+  Agar is app se aapko thoda bhi faida mile, toh bas ek chhoti si dua kar dijiyega:
+  Allah is kaam ko qabool farmaye, aur humein namaz, Quran aur nek amal par istiqamat de. Ameen.
+</p>
+        <div class="hero-actions">
+          <button class="primary-button" id="randomHeroBtn" type="button">
+            <span>New Ayah</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3h4v4M21 3l-6.5 6.5M7 21H3v-4M3 21l6.5-6.5M14 3h-1a8 8 0 0 0-8 8v0M10 21h1a8 8 0 0 0 8-8v0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="secondary-button" id="installBtn" type="button" hidden>
+            <span>Install App</span>
+          </button>
+        </div>
+      </div>
+      <aside class="hero-panel glass-card" aria-label="Current prayer summary">
+        <div class="hero-panel-top">
+          <span>Next Prayer</span>
+          <strong id="nextPrayerName">Loading</strong>
+        </div>
+        <div class="time-orbit">
+          <div class="orbit-ring"></div>
+          <span id="nextPrayerTime">--:--</span>
+          <small id="countdown">Finding timing</small>
+        </div>
+        <div class="location-line">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-4.8 7-11a7 7 0 1 0-14 0c0 6.2 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span id="locationLabel">Mumbai, India</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="status-grid section-reveal" aria-label="App status">
+      <article class="mini-card">
+        <span class="mini-icon">☾</span>
+        <div>
+          <strong id="hijriDate">Hijri date</strong>
+          <small>Synced with prayer API</small>
+        </div>
+      </article>
+      <article class="mini-card">
+        <span class="mini-icon">↯</span>
+        <div>
+          <strong id="onlineState">Online</strong>
+          <small>Offline cache ready</small>
+        </div>
+      </article>
+      <article class="mini-card">
+        <span class="mini-icon">♡</span>
+        <div>
+          <strong><span id="favoriteCount">0</span> saved</strong>
+          <small>Favorite ayahs</small>
+        </div>
+      </article>
+    </section>
+
+    <section class="content-grid" id="ayah">
+      <article class="ayah-card glass-card section-reveal">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">Daily Quran Ayah</p>
+            <h2>Today’s Reflection</h2>
+          </div>
+          <button class="icon-button" id="refreshAyahBtn" type="button" aria-label="Generate random ayah">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v5h5M4 13a8 8 0 0 0 14.9 4M20 19v-5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+        <div class="ayah-loader" id="ayahLoader" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="ayah-content" id="ayahContent">
+          <p class="arabic" id="arabicText" dir="rtl">ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ</p>
+          <div class="ayah-tabs" role="tablist" aria-label="Ayah reading modes">
+            <button class="ayah-tab active" id="tabArabic" type="button" role="tab" aria-selected="true" aria-controls="ayahTabPanel" data-tab="arabic">Arabic</button>
+            <button class="ayah-tab" id="tabRoman" type="button" role="tab" aria-selected="false" aria-controls="ayahTabPanel" data-tab="roman">Roman English</button>
+            <button class="ayah-tab" id="tabMeaning" type="button" role="tab" aria-selected="false" aria-controls="ayahTabPanel" data-tab="meaning">Meaning</button>
+          </div>
+          <div class="ayah-tab-panel arabic-mode" id="ayahTabPanel" role="tabpanel" aria-live="polite" aria-labelledby="tabArabic">
+            <p id="ayahTabText" dir="rtl">ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ</p>
+          </div>
+          <p class="translation visually-hidden" id="translationText">Guide us along the Straight Path.</p>
+          <p class="transliteration visually-hidden" id="romanText">Roman English: Ihdinas-siratal-mustaqeem.</p>
+          <div class="reference-row">
+            <span id="surahRef">Al-Faatiha 1:6</span>
+            <span id="reciterName">Mishary Rashid Al Afasy</span>
+          </div>
+        </div>
+
+        <div class="action-row" aria-label="Ayah actions">
+          <button class="action-button" id="playAudioBtn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z" fill="currentColor"/></svg>
+            Audio
+          </button>
+          <button class="action-button" id="copyAyahBtn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8zM5 16H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            Copy
+          </button>
+          <button class="action-button" id="shareAyahBtn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a3 3 0 1 0-2.8-4M6 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm12-1a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM8.6 15.5l6.8-4M8.6 18.5l6.8-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Share
+          </button>
+          <button class="action-button" id="saveAyahBtn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4a5 5 0 1 1 7.1-7.1l.4.4.4-.4a5 5 0 1 1 7.1 7.1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            Save
+          </button>
+        </div>
+      </article>
+
+      <aside class="quote-card glass-card section-reveal">
+        <p class="eyebrow">Islamic Quote</p>
+        <blockquote id="quoteText">“The best among you are those who learn the Quran and teach it.”</blockquote>
+        <cite id="quoteSource">Sahih al-Bukhari</cite>
+      </aside>
+    </section>
+
+    <section class="prayer-section section-reveal" id="prayers">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">Real-Time Namaz</p>
+          <h2>Prayer Timings</h2>
+        </div>
+        <button class="secondary-button compact" id="detectLocationBtn" type="button">Use Location</button>
+      </div>
+      <div class="prayer-grid" id="prayerGrid" aria-live="polite">
+        <article class="prayer-card skeleton"><span></span><strong></strong><small></small></article>
+        <article class="prayer-card skeleton"><span></span><strong></strong><small></small></article>
+        <article class="prayer-card skeleton"><span></span><strong></strong><small></small></article>
+        <article class="prayer-card skeleton"><span></span><strong></strong><small></small></article>
+        <article class="prayer-card skeleton"><span></span><strong></strong><small></small></article>
+      </div>
+    </section>
+
+    <section class="tools-grid">
+      <article class="tasbeeh glass-card section-reveal" id="tasbeeh">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">Animated Tasbeeh</p>
+            <h2>Dhikr Counter</h2>
+          </div>
+          <button class="icon-button" id="resetTasbeehBtn" type="button" aria-label="Reset tasbeeh">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v6h-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <button class="tasbeeh-orb" id="tasbeehBtn" type="button" aria-label="Increase tasbeeh counter">
+          <span id="tasbeehCount">0</span>
+          <small>Tap</small>
+        </button>
+        <div class="tasbeeh-presets" role="group" aria-label="Tasbeeh presets">
+          <button type="button" data-dhikr="SubhanAllah">SubhanAllah</button>
+          <button type="button" data-dhikr="Alhamdulillah">Alhamdulillah</button>
+          <button type="button" data-dhikr="Allahu Akbar">Allahu Akbar</button>
+        </div>
+        <p class="current-dhikr" id="currentDhikr">SubhanAllah</p>
+      </article>
+
+      <article class="notification-card glass-card section-reveal">
+        <p class="eyebrow">Prayer & Ayah Alerts</p>
+        <h2>Gentle Reminders</h2>
+        <p>Enable browser permission and OneSignal subscription for daily ayah and five namaz reminders.</p>
+        <button class="primary-button full" id="enableNotificationsBtn" type="button">Enable Notifications</button>
+        <div class="toggle-list">
+          <label><input type="checkbox" id="prayerAlertsToggle" checked> Prayer reminders</label>
+          <label><input type="checkbox" id="ayahAlertsToggle" checked> Daily ayah reminder</label>
+        </div>
+      </article>
+    </section>
+
+    <section class="favorites-section section-reveal" id="favorites">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">Saved Ayahs</p>
+          <h2>Favorites</h2>
+        </div>
+        <button class="secondary-button compact" id="clearFavoritesBtn" type="button">Clear</button>
+      </div>
+      <div class="favorites-list" id="favoritesList"></div>
+    </section>
+  </main>
+
+  <div class="permission-modal" id="permissionModal" role="dialog" aria-modal="true" aria-labelledby="permissionTitle" hidden>
+    <div class="modal-card glass-card">
+      <button class="icon-button modal-close" id="closePermissionBtn" type="button" aria-label="Close notification popup">×</button>
+      <span class="modal-icon">☾</span>
+      <h2 id="permissionTitle">Never miss a prayer</h2>
+      <p>Turn on prayer and daily ayah reminders for a complete Namaz & Ayah experience.</p>
+      <button class="primary-button full" id="modalEnableBtn" type="button">Allow Reminders</button>
+    </div>
+  </div>
+
+  <div class="install-modal" id="installModal" role="dialog" aria-modal="true" aria-labelledby="installTitle" hidden>
+    <div class="install-backdrop-glow" aria-hidden="true"></div>
+    <div class="install-card glass-card">
+      <button class="icon-button modal-close" id="closeInstallBtn" type="button" aria-label="Close install popup">×</button>
+      <span class="modal-icon install-icon">☾</span>
+      <p class="eyebrow">Add to Home Screen</p>
+      <h2 id="installTitle">Install Namaz & Ayah</h2>
+      <p id="installDescription">Get daily Quran ayahs, prayer reminders, and Islamic notifications directly on your home screen.</p>
+      <div class="ios-install-steps" id="iosInstallSteps" hidden>
+        Open Safari → Tap Share → Add to Home Screen
+      </div>
+      <div class="install-actions">
+        <button class="primary-button full" id="installNowBtn" type="button">Install Now</button>
+        <button class="secondary-button full" id="maybeLaterBtn" type="button">Maybe Later</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <audio id="ayahAudio" preload="none"></audio>
+  <script src="script.js?v=1.3.3" defer></script>
+</body>
+</html>

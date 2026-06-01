@@ -1,0 +1,47 @@
+{
+  "name": "Namaz & Ayah",
+  "short_name": "Namaz",
+  "description": "Daily Quran ayahs, prayer timings, tasbeeh, favorites, recitation, and reminders.",
+  "id": "/",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#06110f",
+  "theme_color": "#07120f",
+  "categories": ["lifestyle", "productivity", "education"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%2307110f'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%2336f0ad' opacity='.18'/%3E%3Cpath d='M125 47a50 50 0 1 0 0 98 60 60 0 1 1 0-98Z' fill='%23f5cb72'/%3E%3Ctext x='96' y='115' text-anchor='middle' font-size='52' font-family='serif' fill='%23ffffff'%3E%D9%86%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='116' fill='%2307110f'/%3E%3Ccircle cx='256' cy='256' r='172' fill='%2336f0ad' opacity='.18'/%3E%3Cpath d='M333 125a134 134 0 1 0 0 262 160 160 0 1 1 0-262Z' fill='%23f5cb72'/%3E%3Ctext x='256' y='306' text-anchor='middle' font-size='138' font-family='serif' fill='%23ffffff'%3E%D9%86%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Daily Ayah",
+      "short_name": "Ayah",
+      "url": "/index.html#ayah"
+    },
+    {
+      "name": "Prayer Times",
+      "short_name": "Namaz",
+      "url": "/index.html#prayers"
+    },
+    {
+      "name": "Tasbeeh",
+      "short_name": "Tasbeeh",
+      "url": "/index.html#tasbeeh"
+    }
+  ]
+}
