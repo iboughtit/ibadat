@@ -9,7 +9,8 @@ const STORAGE = {
   settings: "namaz_ayah_settings",
   installDismissed: "namaz_ayah_install_dismissed_at",
   location: "namaz_ayah_location",
-  recentAyahs: "namaz_ayah_recent_refs"
+  recentAyahs: "namaz_ayah_recent_refs",
+  quoteHistory: "namaz_ayah_quote_history"
 };
 
 const prayerNames = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
@@ -24,11 +25,46 @@ const surahAyahCounts = [
 ];
 
 const quotes = [
-  ["The best among you are those who learn the Quran and teach it.", "Sahih al-Bukhari"],
-  ["Verily, in the remembrance of Allah do hearts find rest.", "Quran 13:28"],
-  ["Allah does not burden a soul beyond what it can bear.", "Quran 2:286"],
-  ["Prayer is light.", "Sahih Muslim"],
-  ["So remember Me; I will remember you.", "Quran 2:152"]
+  ["Sabr karo, beshak Allah sabr karne walon ke saath hai.", "Roman Urdu"],
+  ["La tahzan innallaha ma'ana.", "Quranic reminder"],
+  ["Allah kisi jaan par uski taqat se zyada bojh nahi daalta.", "Roman Urdu"],
+  ["Fa inna ma'al usri yusra.", "Quranic transliteration"],
+  ["Hasbunallahu wa ni'mal wakeel.", "Dua"],
+  ["Bismillahir Rahmanir Raheem.", "Quranic transliteration"],
+  ["Alhamdulillahi Rabbil Aalameen.", "Quranic transliteration"],
+  ["Ar Rahmanir Raheem.", "Quranic transliteration"],
+  ["Ihdinas Siratal Mustaqeem.", "Dua"],
+  ["Rabbana taqabbal minna innaka Antas Samee'ul Aleem.", "Dua"],
+  ["Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan.", "Dua"],
+  ["Allah par bharosa rakho, woh behtareen kaarsaz hai.", "Roman Urdu"],
+  ["Dil ko sukoon Allah ke zikr se milta hai.", "Roman Urdu"],
+  ["Namaz dil ko roshan karti hai.", "Roman Urdu"],
+  ["Tawakkul rakho, Allah har raasta khol sakta hai.", "Roman Urdu"],
+  ["Jo Allah ke qareeb hota hai, uska dil tanha nahi hota.", "Roman Urdu"],
+  ["Astaghfirullah wa atubu ilaih.", "Istighfar"],
+  ["SubhanAllahi wa bihamdihi.", "Dhikr"],
+  ["La ilaha illa Anta subhanaka inni kuntu minaz-zalimeen.", "Dua"],
+  ["Ya Allah, humein hidayat aur istiqamat ata farma.", "Roman Urdu"],
+  ["Dua kabhi zaya nahi hoti; Allah behtareen waqt par ata karta hai.", "Roman Urdu"],
+  ["Har mushkil ke baad asani hai.", "Roman Urdu"],
+  ["Allah ke faisle mein hamesha hikmat hoti hai.", "Roman Urdu"],
+  ["Quran dilon ke liye shifa hai.", "Roman Urdu"],
+  ["Jo Allah ko yaad karta hai, Allah usay yaad rakhta hai.", "Roman Urdu"],
+  ["Rabbighfir warham wa Anta khairur rahimeen.", "Dua"],
+  ["Allahumma inni as'aluka husnal khatimah.", "Dua"],
+  ["Sujood mein dil apne Rabb ke sab se qareeb hota hai.", "Roman Urdu"],
+  ["Rizq Allah ke haath mein hai; dil ko pareshan na karo.", "Roman Urdu"],
+  ["Tawbah ka darwaza hamesha khula hai.", "Roman Urdu"],
+  ["Ya Muqallibal quloob, thabbit qalbi ala deenik.", "Dua"],
+  ["Allahumma salli ala Muhammad.", "Salawat"],
+  ["La hawla wa la quwwata illa billah.", "Dhikr"],
+  ["Beshak Allah reham karne walon ko pasand farmata hai.", "Roman Urdu"],
+  ["Neki chhoti ho ya badi, Allah ke nazdeek mehfooz rehti hai.", "Roman Urdu"],
+  ["Apne Rabb se umeed kabhi mat todo.", "Roman Urdu"],
+  ["Qalb ko paak rakho, zuban ko zikr se sajao.", "Roman Urdu"],
+  ["Jo shukar karta hai, Allah usay aur ata karta hai.", "Roman Urdu"],
+  ["Allah ki rehmat har gham se badi hai.", "Roman Urdu"],
+  ["Rabbana zalamna anfusana wa illam taghfir lana lanakoonanna minal khasireen.", "Dua"]
 ];
 
 const els = {};
@@ -37,6 +73,7 @@ let prayerData = null;
 let deferredInstallPrompt = null;
 let notificationTimers = [];
 let countdownTimer = null;
+let quoteTimer = null;
 let activeAyahTab = "arabic";
 
 document.addEventListener("DOMContentLoaded", init);
@@ -660,9 +697,42 @@ function setDhikr(dhikr, shouldToast = true) {
 }
 
 function rotateQuote() {
-  const [quote, source] = quotes[new Date().getDate() % quotes.length];
-  els.quoteText.textContent = `“${quote}”`;
-  els.quoteSource.textContent = source;
+  renderRandomQuote(false);
+  clearInterval(quoteTimer);
+  quoteTimer = setInterval(() => renderRandomQuote(true), 180000);
+}
+
+function renderRandomQuote(animate = true) {
+  const quote = getFreshQuote();
+  const applyQuote = () => {
+    els.quoteText.textContent = `“${quote.text}”`;
+    els.quoteSource.textContent = quote.source;
+    els.quoteText.classList.remove("quote-changing");
+    els.quoteSource.classList.remove("quote-changing");
+    void els.quoteText.offsetWidth;
+    els.quoteText.classList.add("quote-visible");
+    els.quoteSource.classList.add("quote-visible");
+  };
+
+  if (!animate) {
+    applyQuote();
+    return;
+  }
+
+  els.quoteText.classList.add("quote-changing");
+  els.quoteSource.classList.add("quote-changing");
+  setTimeout(applyQuote, 260);
+}
+
+function getFreshQuote() {
+  const history = readJSON(STORAGE.quoteHistory) || [];
+  const available = quotes
+    .map(([text, source], index) => ({ text, source, index }))
+    .filter((quote) => !history.includes(quote.index));
+  const pool = available.length ? available : quotes.map(([text, source], index) => ({ text, source, index }));
+  const quote = pool[randomInt(0, pool.length - 1)];
+  writeJSON(STORAGE.quoteHistory, [quote.index, ...history.filter((item) => item !== quote.index)].slice(0, 10));
+  return quote;
 }
 
 function initRevealAnimations() {
