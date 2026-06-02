@@ -1,9 +1,9 @@
-const CACHE_NAME = "namaz-ayah-v1.3.3";
+const CACHE_NAME = "namaz-ayah-v3.0.0";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./style.css?v=1.3.3",
-  "./script.js?v=1.3.3",
+  "./style.css?v=3.0.0",
+  "./script.js?v=3.0.0",
   "./manifest.json",
   "./OneSignalSDKWorker.js"
 ];

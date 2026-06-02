@@ -705,7 +705,7 @@ function initParticles() {
       if (p.x > innerWidth + 10) p.x = -10;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(154, 245, 208, ${p.a})`;
+      ctx.fillStyle = `rgba(224, 197, 143, ${p.a})`;
       ctx.fill();
     });
     if (!reduceMotion) requestAnimationFrame(draw);
@@ -796,6 +796,26 @@ function formatAyahShareText(ayah) {
 
 function transliterateAyah(text = "") {
   const normalized = text.normalize("NFC").replace(/[ۖۗۘۙۚۛۜ۞ۣ۟۠ۡۢۤۥۦۧۨ۩ـ]/g, "");
+  const plain = normalized
+    .replace(/[ًٌٍَُِّْٰ]/g, "")
+    .replace(/[ٱأإآ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/\s+/g, " ")
+    .trim();
+  const exact = {
+    "بسم الله الرحمن الرحيم": "Bismillahir Rahmanir Raheem",
+    "الحمد لله رب العالمين": "Alhamdulillahi Rabbil Aalameen",
+    "الرحمن الرحيم": "Ar Rahmanir Raheem",
+    "مالك يوم الدين": "Maaliki Yawmid Deen",
+    "اياك نعبد واياك نستعين": "Iyyaka Na'budu Wa Iyyaka Nasta'een",
+    "اهدنا الصراط المستقيم": "Ihdinas Siratal Mustaqeem",
+    "صراط الذين انعمت عليهم غير المغضوب عليهم ولا الضالين": "Siratal Lazeena An'amta Alaihim Ghairil Maghdoobi Alaihim Wa Lad Dalleen",
+    "قل هو الله احد": "Qul Huwallahu Ahad",
+    "الله الصمد": "Allahus Samad",
+    "لم يلد ولم يولد": "Lam Yalid Wa Lam Yoolad",
+    "ولم يكن له كفوا احد": "Wa Lam Yakullahu Kufuwan Ahad"
+  };
+  if (exact[plain]) return exact[plain];
   if (/بِسْمِ\s+ٱ?للَّهِ\s+ٱ?لرَّحْمَٰنِ\s+ٱ?لرَّحِيمِ/.test(normalized)) {
     return "Bismillahir Rahmanir Raheem";
   }
@@ -844,11 +864,32 @@ function transliterateAyah(text = "") {
 
 function tidyTransliteration(value) {
   return value
+    .replace(/\bEenanmaa\b/gi, "Innama")
+    .replace(/\bAl-Lalhi\b/gi, "Allahi")
+    .replace(/\bAl-Lalhu\b/gi, "Allahu")
+    .replace(/\bAl-Lalha\b/gi, "Allaha")
+    .replace(/\bAl-Llahu\b/gi, "Allahu")
+    .replace(/\bAl-Llahi\b/gi, "Allahi")
+    .replace(/\bNurieedu\b/gi, "Nureedu")
+    .replace(/\bShukuorana\b/gi, "Shukooran")
+    .replace(/\bqul huwa allahu ahadun\b/gi, "Qul Huwallahu Ahad")
+    .replace(/\ballahu alssamadu\b/gi, "Allahus Samad")
+    .replace(/\blam yalid walam yooladu\b/gi, "Lam Yalid Wa Lam Yoolad")
+    .replace(/\bwalam yakun lahu kufuwan ahadun\b/gi, "Wa Lam Yakullahu Kufuwan Ahad")
+    .replace(/\balhamdu lillahi rabbi al'aalameena\b/gi, "Alhamdulillahi Rabbil Aalameen")
+    .replace(/\barrahmani arraheemi\b/gi, "Ar Rahmanir Raheem")
+    .replace(/\bmaaliki yawmi alddeeni\b/gi, "Maaliki Yawmid Deen")
     .replace(/\ba\s+llahi\b/gi, "Allahi")
     .replace(/\ba\s+llahu\b/gi, "Allahu")
+    .replace(/\ballahu al/gi, "Allahul ")
     .replace(/\ballahi\s+alr/gi, "Allahir R")
     .replace(/\balr/gi, "ar-r")
     .replace(/\bal([tdszrlmn])/gi, "al-$1")
+    .replace(/\bwa\s+lam\b/gi, "wa lam")
+    .replace(/\bwala\b/gi, "wa la")
+    .replace(/\byooladu\b/gi, "yoolad")
+    .replace(/\bahadun\b/gi, "ahad")
+    .replace(/\bassamadu\b/gi, "samad")
     .replace(/'uo/gi, "'oo")
     .replace(/uona\b/gi, "oona")
     .replace(/aona\b/gi, "oon")
@@ -1241,7 +1282,7 @@ function showToast(message) {
 }
 
 function iconDataUri() {
-  return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%2307110f'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%2336f0ad' opacity='.18'/%3E%3Cpath d='M125 47a50 50 0 1 0 0 98 60 60 0 1 1 0-98Z' fill='%23f5cb72'/%3E%3Ctext x='96' y='115' text-anchor='middle' font-size='52' font-family='serif' fill='%23ffffff'%3E%D9%86%3C/text%3E%3C/svg%3E";
+  return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%23112250'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%233C507D' opacity='.62'/%3E%3Cpath d='M125 47a50 50 0 1 0 0 98 60 60 0 1 1 0-98Z' fill='%23E0C58F'/%3E%3Ctext x='96' y='115' text-anchor='middle' font-size='52' font-family='serif' fill='%23F5F0E9'%3E%D9%86%3C/text%3E%3C/svg%3E";
 }
 
 function fallbackAyah() {
